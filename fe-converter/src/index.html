@@ -1,13 +1,61 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>FeConverter</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>DevConverter - Free Developer Tools | Base64, JSON, SQL & More</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Free online developer tools: Convert Base64 to Image, JSON to TypeScript, SQL to CSV, and more. Fast, secure, and easy-to-use converters for developers."
+    />
+    <meta
+      name="keywords"
+      content="base64 to image, json converter, sql formatter, developer tools, online converter, web development, coding utilities"
+    />
+    <meta name="author" content="DevConverter" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dev-converter.com/" />
+    <meta property="og:title" content="DevConverter - Free Developer Tools" />
+    <meta
+      property="og:description"
+      content="All-in-one developer utility belt. Convert, format, and visualize data instantly in your browser."
+    />
+    <meta property="og:image" content="assets/og-image.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://dev-converter.com/" />
+    <meta property="twitter:title" content="DevConverter - Free Developer Tools" />
+    <meta
+      property="twitter:description"
+      content="All-in-one developer utility belt. Convert, format, and visualize data instantly in your browser."
+    />
+    <meta property="twitter:image" content="assets/og-image.png" />
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "DevConverter",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "A suite of free online developer tools including Base64 converters, JSON formatters, and SQL utilities.",
+        "featureList": "Base64 to Image, Image to Base64, JSON to TypeScript, SQL Formatter"
+      }
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>
