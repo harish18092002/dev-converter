@@ -1,59 +1,78 @@
-# FeConverter
+# DevConverter
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.3.
+<p align="center">
+  <img src="public/favicon.png" alt="DevConverter Logo" width="100" />
+</p>
 
-## Development server
+DevConverter is a comprehensive suite of free, client-side developer tools designed to make your daily tasks easier. Convert, format, and visualize data instantly in your browser without sending data to a server.
 
-To start a local development server, run:
+## Features
 
-```bash
-ng serve
-```
+- **Encoders & Decoders**: Base64 to Image, Image to Base64, URL Encode/Decode.
+- **JSON Tools**: Format JSON, Minify JSON, JSON to TypeScript interfaces.
+- **SQL Tools**: SQL Formatter, SQL to CSV/JSON.
+- **Curl Tools**: Convert Curl commands to Fetch, Python, Go, etc.
+- **Date Tools**: Timestamp converter, Date formatting.
+- **Utility**: UUID Generator, Hash Generator, and more.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Tech Stack
 
-## Code scaffolding
+- **Framework**: [Angular](https://angular.io/) (v19+)
+- **Styling**: [TailwindCSS](https://tailwindcss.com/)
+- **Build Tool**: Angular CLI
+- **State Management**: RxJS
+- **Formatting Libraries**: `sql-formatter`, `prettier`, `js-beautify`
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Getting Started
 
-```bash
-ng generate component component-name
-```
+### Prerequisites
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Node.js (v18 or higher)
+- npm
 
-```bash
-ng generate --help
-```
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/dev-converter.git
+   cd dev-converter/fe-converter
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+
+   ```bash
+   ng serve
+   ```
+
+4. Open your browser and navigate to `http://localhost:4200/`.
 
 ## Building
 
-To build the project run:
+To build the project for production:
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## Contributing
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Capabilities are always growing! If you'd like to contribute:
 
-```bash
-ng test
-```
+1. Fork the repo.
+2. Create a new branch (`git checkout -b feature/amazing-feature`).
+3. Commit your changes.
+4. Push to the branch.
+5. Open a Pull Request.
 
-## Running end-to-end tests
+## License
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is open source and available under the [MIT License](LICENSE).
