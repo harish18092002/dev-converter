@@ -1,74 +1,51 @@
 import { Injectable } from '@angular/core';
-import * as yaml from 'js-yaml';
-import * as papa from 'papaparse';
-import * as xmlJs from 'xml-js';
-import * as XLSX from 'xlsx';
-import { format as sqlFormat } from 'sql-formatter';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConverterService {
-  // JSON <-> XML
-  jsonToXml(jsonStr: string): string {
-    try {
-      const obj = JSON.parse(jsonStr);
-      return xmlJs.js2xml(obj, { compact: true, spaces: 2 });
-    } catch (e) {
-      throw new Error('Invalid JSON');
-    }
+  // JSON <-> XML (dynamic import: xml-js)
+  async jsonToXml(jsonStr: string): Promise<string> {
+    const obj = JSON.parse(jsonStr);
+    const xmlJs = await import('xml-js');
+    return xmlJs.js2xml(obj, { compact: true, spaces: 2 });
   }
 
-  xmlToJson(xmlStr: string): string {
-    try {
-      const obj = xmlJs.xml2js(xmlStr, { compact: true });
-      return JSON.stringify(obj, null, 2);
-    } catch (e) {
-      throw new Error('Invalid XML');
-    }
+  async xmlToJson(xmlStr: string): Promise<string> {
+    const xmlJs = await import('xml-js');
+    const obj = xmlJs.xml2js(xmlStr, { compact: true });
+    return JSON.stringify(obj, null, 2);
   }
 
-  // JSON <-> YAML
-  jsonToYaml(jsonStr: string): string {
-    try {
-      const obj = JSON.parse(jsonStr);
-      return yaml.dump(obj);
-    } catch (e) {
-      throw new Error('Invalid JSON');
-    }
+  // JSON <-> YAML (dynamic import: js-yaml)
+  async jsonToYaml(jsonStr: string): Promise<string> {
+    const obj = JSON.parse(jsonStr);
+    const yaml = await import('js-yaml');
+    return yaml.dump(obj);
   }
 
-  yamlToJson(yamlStr: string): string {
-    try {
-      const obj = yaml.load(yamlStr);
-      return JSON.stringify(obj, null, 2);
-    } catch (e) {
-      throw new Error('Invalid YAML');
-    }
+  async yamlToJson(yamlStr: string): Promise<string> {
+    const yaml = await import('js-yaml');
+    const obj = yaml.load(yamlStr);
+    return JSON.stringify(obj, null, 2);
   }
 
-  // JSON <-> CSV
-  jsonToCsv(jsonStr: string): string {
-    try {
-      const obj = JSON.parse(jsonStr);
-      const data = Array.isArray(obj) ? obj : [obj];
-      return papa.unparse(data);
-    } catch (e) {
-      throw new Error('Invalid JSON. Must be an array of objects or a single object.');
-    }
+  // JSON <-> CSV (dynamic import: papaparse)
+  async jsonToCsv(jsonStr: string): Promise<string> {
+    const obj = JSON.parse(jsonStr);
+    const papa = await import('papaparse');
+    const data = Array.isArray(obj) ? obj : [obj];
+    return papa.unparse(data);
   }
 
-  csvToJson(csvStr: string): string {
-    try {
-      const result = papa.parse(csvStr, { header: true });
-      if (result.errors.length > 0) throw new Error('CSV Parsing Error');
-      return JSON.stringify(result.data, null, 2);
-    } catch (e) {
-      throw new Error('Invalid CSV');
-    }
+  async csvToJson(csvStr: string): Promise<string> {
+    const papa = await import('papaparse');
+    const result = papa.parse(csvStr, { header: true });
+    if (result.errors.length > 0) throw new Error('CSV Parsing Error');
+    return JSON.stringify(result.data, null, 2);
   }
 
-  // JSON -> SQL
+  // JSON -> SQL (pure JS — no external lib needed)
   jsonToSql(jsonStr: string, tableName: string = 'table_name'): string {
     try {
       const data = JSON.parse(jsonStr);

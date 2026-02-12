@@ -210,7 +210,7 @@ export class JsonConverterComponent {
     this.convert();
   }
 
-  convert() {
+  async convert() {
     const input = this.jsonInput();
     if (!input.trim()) {
       this.output.set('');
@@ -228,16 +228,16 @@ export class JsonConverterComponent {
     try {
       switch (this.activeTab()) {
         case 'xml':
-          this.output.set(this.svc.jsonToXml(input));
+          this.output.set(await this.svc.jsonToXml(input));
           break;
         case 'yaml':
-          this.output.set(this.svc.jsonToYaml(input));
+          this.output.set(await this.svc.jsonToYaml(input));
           break;
         case 'csv':
-          this.output.set(this.svc.jsonToCsv(input));
+          this.output.set(await this.svc.jsonToCsv(input));
           break;
         case 'excel':
-          this.output.set(this.svc.jsonToCsv(input));
+          this.output.set(await this.svc.jsonToCsv(input));
           break;
         case 'sql':
           this.output.set(this.svc.jsonToSql(input));

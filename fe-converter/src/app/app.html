@@ -1,5 +1,23 @@
 <app-header />
+
+<!-- Route transition progress bar -->
+@if (isNavigating()) {
+  <div class="fixed top-0 left-0 w-full z-[60] h-[2px]">
+    <div
+      class="h-full rounded-r-full"
+      style="
+        background: linear-gradient(90deg, #7c3aed, #a78bfa, #fbbf24);
+        animation: route-progress 1.2s ease-in-out infinite;
+        width: 40%;
+      "
+    ></div>
+  </div>
+}
+
 <main class="min-h-screen">
+  @if (isNavigating()) {
+    <app-skeleton-loader />
+  }
   <router-outlet />
 </main>
 <app-footer />
