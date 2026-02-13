@@ -1,4 +1,5 @@
 import { Component, signal, inject, afterNextRender } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   RouterOutlet,
   Router,
@@ -27,22 +28,24 @@ export class App {
     afterNextRender(() => {
       const loader = document.getElementById('app-loader');
       if (loader) {
-        loader.classList.add('loader-hidden');
-        setTimeout(() => loader.remove(), 600);
+        setTimeout(() => {
+          loader.classList.add('loader-hidden');
+          setTimeout(() => loader.remove(), 600);
+        }, 300);
       }
-    });
 
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        this.navTimer = setTimeout(() => this.isNavigating.set(true), 200);
-      } else if (
-        event instanceof NavigationEnd ||
-        event instanceof NavigationCancel ||
-        event instanceof NavigationError
-      ) {
-        if (this.navTimer) clearTimeout(this.navTimer);
-        this.isNavigating.set(false);
-      }
+      this.router.events.pipe(takeUntilDestroyed()).subscribe((event) => {
+        if (event instanceof NavigationStart) {
+          this.navTimer = setTimeout(() => this.isNavigating.set(true), 200);
+        } else if (
+          event instanceof NavigationEnd ||
+          event instanceof NavigationCancel ||
+          event instanceof NavigationError
+        ) {
+          if (this.navTimer) clearTimeout(this.navTimer);
+          this.isNavigating.set(false);
+        }
+      });
     });
   }
 }
