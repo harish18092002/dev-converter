@@ -126,102 +126,52 @@ import { ThemeService } from '../../core/services/theme.service';
       <!-- ═══ TOOLS ═══ -->
       <section id="tools" class="relative py-32">
         <div class="container mx-auto px-6 lg:px-10">
-          @defer (on viewport) {
-            <div id="tools-header" class="text-center mb-20">
-              <p
-                class="text-[11px] uppercase tracking-[0.2em] font-semibold mb-3"
-                style="color:var(--gradient-from)"
-              >
-                Developer Toolkit
-              </p>
-              <h2
-                class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight"
-                style="color:var(--text-primary)"
-              >
-                Everything in one place
-              </h2>
-            </div>
+          <div id="tools-header" class="text-center mb-20">
+            <p
+              class="text-[11px] uppercase tracking-[0.2em] font-semibold mb-3"
+              style="color:var(--gradient-from)"
+            >
+              Developer Toolkit
+            </p>
+            <h2
+              class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight"
+              style="color:var(--text-primary)"
+            >
+              Everything in one place
+            </h2>
+          </div>
 
-            <div id="tools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              @for (tool of tools; track tool.route) {
-                <a [routerLink]="tool.route" class="glass-hover rounded-2xl p-7 block">
-                  <div class="flex items-start gap-4">
-                    <div
-                      class="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                      [style.background]="tool.bg"
-                    >
-                      {{ tool.icon }}
-                    </div>
-                    <div class="min-w-0">
-                      <h3
-                        class="font-semibold text-[15px] mb-1.5"
-                        style="color:var(--text-primary)"
-                      >
-                        {{ tool.title }}
-                      </h3>
-                      <p class="text-sm leading-relaxed mb-3" style="color:var(--text-secondary)">
-                        {{ tool.desc }}
-                      </p>
-                      <div class="flex flex-wrap gap-1.5">
-                        @for (tag of tool.tags; track tag) {
-                          <span
-                            class="text-[10px] uppercase tracking-[0.1em] font-medium px-2 py-0.5 rounded-md"
-                            style="background:var(--tag-bg);color:var(--tag-text)"
-                            >{{ tag }}</span
-                          >
-                        }
-                      </div>
+          <div id="tools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            @for (tool of tools; track tool.route) {
+              <a [routerLink]="tool.route" class="glass-hover rounded-2xl p-7 block">
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                    [style.background]="tool.bg"
+                  >
+                    {{ tool.icon }}
+                  </div>
+                  <div class="min-w-0">
+                    <h3 class="font-semibold text-[15px] mb-1.5" style="color:var(--text-primary)">
+                      {{ tool.title }}
+                    </h3>
+                    <p class="text-sm leading-relaxed mb-3" style="color:var(--text-secondary)">
+                      {{ tool.desc }}
+                    </p>
+                    <div class="flex flex-wrap gap-1.5">
+                      @for (tag of tool.tags; track tag) {
+                        <span
+                          class="text-[10px] uppercase tracking-[0.1em] font-medium px-2 py-0.5 rounded-md"
+                          style="background:var(--tag-bg);color:var(--tag-text)"
+                          >{{ tag }}</span
+                        >
+                      }
                     </div>
                   </div>
-                </a>
-              }
-            </div>
-          } @placeholder {
-            <div>
-              <div class="text-center mb-20">
-                <div
-                  class="h-3 w-32 mx-auto mb-3 rounded-md animate-pulse"
-                  style="background:var(--bg-card)"
-                ></div>
-                <div
-                  class="h-10 w-64 mx-auto rounded-lg animate-pulse"
-                  style="background:var(--bg-card)"
-                ></div>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-                  <div class="rounded-2xl p-7" style="background:var(--bg-card)">
-                    <div class="flex items-start gap-4">
-                      <div
-                        class="w-12 h-12 rounded-xl animate-pulse"
-                        style="background:var(--bg-card-hover)"
-                      ></div>
-                      <div class="flex-1 space-y-3">
-                        <div
-                          class="h-4 w-32 rounded animate-pulse"
-                          style="background:var(--bg-card-hover)"
-                        ></div>
-                        <div
-                          class="h-3 w-full rounded animate-pulse"
-                          style="background:var(--bg-card-hover)"
-                        ></div>
-                        <div class="flex gap-2">
-                          <div
-                            class="h-5 w-16 rounded animate-pulse"
-                            style="background:var(--bg-card-hover)"
-                          ></div>
-                          <div
-                            class="h-5 w-16 rounded animate-pulse"
-                            style="background:var(--bg-card-hover)"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                }
-              </div>
-            </div>
-          }
+                </div>
+              </a>
+            }
+          </div>
         </div>
       </section>
 
@@ -323,12 +273,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (!isPlatformBrowser(this.pid)) return;
 
-    afterNextRender(() => {
-      this.ngZone.runOutsideAngular(async () => {
-        const gsap = (await import('gsap')).default;
-        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-        gsap.registerPlugin(ScrollTrigger);
+    afterNextRender(async () => {
+      const gsap = (await import('gsap')).default;
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
 
+      this.ngZone.runOutsideAngular(() => {
         this.ctx = gsap.context(() => {
           const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
           tl.from('#hero-badge', { y: 30, opacity: 0, duration: 0.8 })
