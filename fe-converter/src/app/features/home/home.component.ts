@@ -11,7 +11,6 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ThemeService } from '../../core/services/theme.service';
-import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-home',
@@ -211,7 +210,6 @@ import { LoadingService } from '../../core/services/loading.service';
 export class HomeComponent implements OnInit, OnDestroy {
   private pid = inject(PLATFORM_ID);
   private ngZone = inject(NgZone);
-  private loadingService = inject(LoadingService);
   themeSvc = inject(ThemeService);
   private ctx: any;
 
@@ -275,82 +273,70 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (!isPlatformBrowser(this.pid)) return;
 
-    this.loadingService.startLoading('home');
-
     afterNextRender(async () => {
-      try {
-        const gsap = (await import('gsap')).default;
-        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-        gsap.registerPlugin(ScrollTrigger);
+      const gsap = (await import('gsap')).default;
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
 
-        this.ngZone.runOutsideAngular(() => {
-          this.ctx = gsap.context(() => {
-            const tl = gsap.timeline({
-              defaults: { ease: 'power3.out' },
-              onComplete: () => {
-                setTimeout(() => this.loadingService.finishLoading('home'), 500);
-              },
-            });
-            tl.from('#hero-badge', { y: 30, opacity: 0, duration: 0.8 })
-              .from('#hero-title', { y: 50, opacity: 0, duration: 1 }, '-=0.5')
-              .from('#hero-sub', { y: 30, opacity: 0, duration: 0.8 }, '-=0.6')
-              .from('#hero-cta', { y: 20, opacity: 0, duration: 0.7 }, '-=0.5')
-              .from(
-                '#hero-metrics > div',
-                { y: 20, opacity: 0, stagger: 0.12, duration: 0.6 },
-                '-=0.3',
-              );
+      this.ngZone.runOutsideAngular(() => {
+        this.ctx = gsap.context(() => {
+          const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+          tl.from('#hero-badge', { y: 30, opacity: 0, duration: 0.8 })
+            .from('#hero-title', { y: 50, opacity: 0, duration: 1 }, '-=0.5')
+            .from('#hero-sub', { y: 30, opacity: 0, duration: 0.8 }, '-=0.6')
+            .from('#hero-cta', { y: 20, opacity: 0, duration: 0.7 }, '-=0.5')
+            .from(
+              '#hero-metrics > div',
+              { y: 20, opacity: 0, stagger: 0.12, duration: 0.6 },
+              '-=0.3',
+            );
 
-            gsap.to('#orb-a', {
-              x: 60,
-              y: 40,
-              duration: 10,
-              repeat: -1,
-              yoyo: true,
-              ease: 'sine.inOut',
-            });
-            gsap.to('#orb-b', {
-              x: -50,
-              y: -30,
-              duration: 12,
-              repeat: -1,
-              yoyo: true,
-              ease: 'sine.inOut',
-            });
-            gsap.to('#orb-c', {
-              x: 40,
-              y: -50,
-              duration: 14,
-              repeat: -1,
-              yoyo: true,
-              ease: 'sine.inOut',
-            });
+          gsap.to('#orb-a', {
+            x: 60,
+            y: 40,
+            duration: 10,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+          });
+          gsap.to('#orb-b', {
+            x: -50,
+            y: -30,
+            duration: 12,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+          });
+          gsap.to('#orb-c', {
+            x: 40,
+            y: -50,
+            duration: 14,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+          });
 
-            gsap.from('#tools-header', {
-              scrollTrigger: { trigger: '#tools-header', start: 'top 85%' },
-              y: 50,
+          gsap.from('#tools-header', {
+            scrollTrigger: { trigger: '#tools-header', start: 'top 85%' },
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            ease: 'power2.out',
+          });
+
+          const cards = document.querySelectorAll('#tools-grid > a');
+          cards.forEach((card, i) => {
+            gsap.from(card, {
+              scrollTrigger: { trigger: card, start: 'top 90%' },
+              y: 60,
               opacity: 0,
-              duration: 1,
+              duration: 0.7,
+              delay: i * 0.08,
               ease: 'power2.out',
-            });
-
-            const cards = document.querySelectorAll('#tools-grid > a');
-            cards.forEach((card, i) => {
-              gsap.from(card, {
-                scrollTrigger: { trigger: card, start: 'top 90%' },
-                y: 60,
-                opacity: 0,
-                duration: 0.7,
-                delay: i * 0.08,
-                ease: 'power2.out',
-              });
             });
           });
         });
-      } catch (error) {
-        console.error('GSAP loading error:', error);
-        this.loadingService.finishLoading('home');
-      }
+      });
     });
   }
 
