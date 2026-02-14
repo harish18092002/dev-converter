@@ -273,10 +273,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (!isPlatformBrowser(this.pid)) return;
 
+    const isMobile = window.innerWidth < 768;
+
     afterNextRender(async () => {
       const gsap = (await import('gsap')).default;
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      gsap.registerPlugin(ScrollTrigger);
 
       this.ngZone.runOutsideAngular(() => {
         this.ctx = gsap.context(() => {
@@ -291,31 +291,40 @@ export class HomeComponent implements OnInit, OnDestroy {
               '-=0.3',
             );
 
-          gsap.to('#orb-a', {
-            x: 60,
-            y: 40,
-            duration: 10,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-          });
-          gsap.to('#orb-b', {
-            x: -50,
-            y: -30,
-            duration: 12,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-          });
-          gsap.to('#orb-c', {
-            x: 40,
-            y: -50,
-            duration: 14,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-          });
+          if (!isMobile) {
+            gsap.to('#orb-a', {
+              x: 60,
+              y: 40,
+              duration: 10,
+              repeat: -1,
+              yoyo: true,
+              ease: 'sine.inOut',
+            });
+            gsap.to('#orb-b', {
+              x: -50,
+              y: -30,
+              duration: 12,
+              repeat: -1,
+              yoyo: true,
+              ease: 'sine.inOut',
+            });
+            gsap.to('#orb-c', {
+              x: 40,
+              y: -50,
+              duration: 14,
+              repeat: -1,
+              yoyo: true,
+              ease: 'sine.inOut',
+            });
+          }
+        });
+      });
 
+      if (!isMobile) {
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+        gsap.registerPlugin(ScrollTrigger);
+
+        this.ngZone.runOutsideAngular(() => {
           gsap.from('#tools-header', {
             scrollTrigger: { trigger: '#tools-header', start: 'top 85%' },
             y: 50,
@@ -336,7 +345,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             });
           });
         });
-      });
+      }
     });
   }
 

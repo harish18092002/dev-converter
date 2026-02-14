@@ -1,0 +1,36 @@
+[debug] [2026-02-14T20:04:30.429Z] ----------------------------------------------------------------------
+[debug] [2026-02-14T20:04:30.431Z] Command:       /opt/homebrew/Cellar/node/24.2.0/bin/node /opt/homebrew/bin/firebase deploy
+[debug] [2026-02-14T20:04:30.432Z] CLI Version:   15.5.1
+[debug] [2026-02-14T20:04:30.432Z] Platform:      darwin
+[debug] [2026-02-14T20:04:30.432Z] Node Version:  v24.2.0
+[debug] [2026-02-14T20:04:30.432Z] Time:          Sun Feb 15 2026 01:34:30 GMT+0530 (India Standard Time)
+[debug] [2026-02-14T20:04:30.432Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-02-14T20:04:31.589Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-14T20:04:31.589Z] > authorizing via signed-in user (harish18092002@gmail.com)
+[debug] [2026-02-14T20:04:31.589Z] [iam] checking project devconverter-87f4f for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-02-14T20:04:31.590Z] Checked if tokens are valid: false, expires at: 1771100221823
+[debug] [2026-02-14T20:04:31.590Z] Checked if tokens are valid: false, expires at: 1771100221823
+[debug] [2026-02-14T20:04:31.591Z] > refreshing access token with scopes: []
+[debug] [2026-02-14T20:04:31.592Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-14T20:04:31.592Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-14T20:04:31.707Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-02-14T20:04:31.707Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-14T20:04:31.732Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/devconverter-87f4f:testIamPermissions [none]
+[debug] [2026-02-14T20:04:31.732Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/devconverter-87f4f:testIamPermissions  x-goog-user-project=devconverter-87f4f
+[debug] [2026-02-14T20:04:31.732Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/devconverter-87f4f:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-02-14T20:04:32.987Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/devconverter-87f4f:testIamPermissions 200
+[debug] [2026-02-14T20:04:32.987Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/devconverter-87f4f:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-02-14T20:04:32.987Z] Checked if tokens are valid: true, expires at: 1771103070707
+[debug] [2026-02-14T20:04:32.987Z] Checked if tokens are valid: true, expires at: 1771103070707
+[debug] [2026-02-14T20:04:32.987Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/devconverter-87f4f [none]
+[debug] [2026-02-14T20:04:33.402Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/devconverter-87f4f 200
+[debug] [2026-02-14T20:04:33.402Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/devconverter-87f4f {"projectId":"devconverter-87f4f","projectNumber":"4361740658","displayName":"DevConverter","name":"projects/devconverter-87f4f","resources":{"hostingSite":"devconverter-87f4f"},"state":"ACTIVE","etag":"1_2c628ba9-e723-454f-8156-626f372ce127"}
+[info] 
+[info] === Deploying to 'devconverter-87f4f'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2026-02-14T20:04:33.404Z] Checked if tokens are valid: true, expires at: 1771103070707
+[debug] [2026-02-14T20:04:33.404Z] Checked if tokens are valid: true, expires at: 1771103070707
+[debug] [2026-02-14T20:04:33.404Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/devconverter-87f4f/versions [none]
+[debug] [2026-02-14T20:04:33.404Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/devconverter-87f4f/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}

@@ -1,8 +1,16 @@
-import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {
+  Component,
+  signal,
+  inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
+import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { ThemeService } from '../services/theme.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -165,10 +173,24 @@ import { ThemeService } from '../services/theme.service';
 })
 export class HeaderComponent {
   private pid = inject(PLATFORM_ID);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
   themeSvc = inject(ThemeService);
   isScrolled = signal(false);
   menuOpen = signal(false);
   isAnimating = signal(false);
+
+  constructor() {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed(),
+      )
+      .subscribe(() => {
+        this.menuOpen.set(false);
+        this.cdr.markForCheck();
+      });
+  }
 
   navItems = [
     { label: 'Home', path: '/', exact: true },
