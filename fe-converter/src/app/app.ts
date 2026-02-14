@@ -1,4 +1,4 @@
-import { Component, signal, inject, afterNextRender } from '@angular/core';
+import { Component, signal, inject, afterNextRender, effect } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   RouterOutlet,
@@ -11,6 +11,7 @@ import {
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { SkeletonLoaderComponent } from './shared/skeleton-loader/skeleton-loader.component';
+import { LoadingService } from './core/services/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -20,20 +21,26 @@ import { SkeletonLoaderComponent } from './shared/skeleton-loader/skeleton-loade
 })
 export class App {
   private router = inject(Router);
+  private loadingService = inject(LoadingService);
   protected readonly title = signal('fe-converter');
   protected isNavigating = signal(false);
   private navTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
-    afterNextRender(() => {
-      const loader = document.getElementById('app-loader');
-      if (loader) {
-        setTimeout(() => {
-          loader.classList.add('loader-hidden');
-          setTimeout(() => loader.remove(), 600);
-        }, 300);
+    effect(() => {
+      const isLoading = this.loadingService.isLoading();
+      if (!isLoading) {
+        const loader = document.getElementById('app-loader');
+        if (loader && !loader.classList.contains('loader-hidden')) {
+          setTimeout(() => {
+            loader.classList.add('loader-hidden');
+            setTimeout(() => loader.remove(), 600);
+          }, 300);
+        }
       }
+    });
 
+    afterNextRender(() => {
       this.router.events.pipe(takeUntilDestroyed()).subscribe((event) => {
         if (event instanceof NavigationStart) {
           this.navTimer = setTimeout(() => this.isNavigating.set(true), 200);
