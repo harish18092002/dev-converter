@@ -214,18 +214,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   private ctx: any;
 
   stats = [
-    { value: '6+', label: 'Categories' },
-    { value: '20+', label: 'Converters' },
+    { value: '10+', label: 'Categories' },
+    { value: '40+', label: 'Converters' },
     { value: '0 kb', label: 'Data Sent' },
   ];
 
   tools = [
+    // ── Encoding / Format ────────────────────────────────────────────────────
     {
       icon: '{}',
       title: 'JSON Converters',
       route: '/json',
-      desc: 'Bidirectional JSON to XML, YAML, CSV, Excel, and SQL.',
-      tags: ['xml', 'yaml', 'csv', 'xlsx', 'sql'],
+      desc: 'Bidirectional JSON to XML, YAML, CSV, Excel, SQL, and TOML.',
+      tags: ['xml', 'yaml', 'csv', 'sql', 'toml'],
       bg: 'rgba(124,58,237,0.12)',
     },
     {
@@ -236,6 +237,91 @@ export class HomeComponent implements OnInit, OnDestroy {
       tags: ['string', 'image', 'pdf', 'binary'],
       bg: 'rgba(245,158,11,0.12)',
     },
+    // ── Security ─────────────────────────────────────────────────────────────
+    {
+      icon: '🔑',
+      title: 'JWT Decoder',
+      route: '/jwt',
+      desc: 'Decode JWT tokens, inspect claims, and check expiry — no server needed.',
+      tags: ['jwt', 'auth', 'claims', 'oauth'],
+      bg: 'rgba(239,68,68,0.12)',
+    },
+    {
+      icon: '🛡️',
+      title: 'Password Generator',
+      route: '/password',
+      desc: 'Cryptographically secure passwords and passphrases via Web Crypto API.',
+      tags: ['crypto', 'passphrase', 'entropy'],
+      bg: 'rgba(236,72,153,0.12)',
+    },
+    // ── Text / String ─────────────────────────────────────────────────────────
+    {
+      icon: '.*',
+      title: 'Regex Tester',
+      route: '/regex',
+      desc: 'Test regular expressions in real time with match highlighting and group capture.',
+      tags: ['regexp', 'match', 'replace', 'groups'],
+      bg: 'rgba(234,179,8,0.12)',
+    },
+    {
+      icon: 'Aa',
+      title: 'Case Converter',
+      route: '/utils',
+      desc: 'Transform text: camelCase, snake_case, kebab-case, CONSTANT_CASE, and more.',
+      tags: ['camel', 'snake', 'kebab', 'pascal'],
+      bg: 'rgba(168,85,247,0.12)',
+    },
+    {
+      icon: '01',
+      title: 'Number Base',
+      route: '/number',
+      desc: 'Convert between Decimal, Hex, Binary, and Octal. Supports BigInt.',
+      tags: ['hex', 'binary', 'octal', 'bigint'],
+      bg: 'rgba(16,185,129,0.12)',
+    },
+    // ── Design ────────────────────────────────────────────────────────────────
+    {
+      icon: '🎨',
+      title: 'Color Converter',
+      route: '/color',
+      desc: 'Convert HEX, RGB, HSL, and OKLCH. Preview live swatches and generate palettes.',
+      tags: ['hex', 'rgb', 'hsl', 'oklch'],
+      bg: 'rgba(249,115,22,0.12)',
+    },
+    {
+      icon: 'px',
+      title: 'CSS Unit Converter',
+      route: '/css-units',
+      desc: 'Convert px, rem, em, vw, vh, pt, cm, mm — all units in real time.',
+      tags: ['px', 'rem', 'em', 'vw', 'vh'],
+      bg: 'rgba(6,182,212,0.12)',
+    },
+    // ── Network ───────────────────────────────────────────────────────────────
+    {
+      icon: '🔗',
+      title: 'URL Parser',
+      route: '/url',
+      desc: 'Decompose URLs, encode/decode components, and build query strings.',
+      tags: ['url', 'query', 'encode', 'decode'],
+      bg: 'rgba(34,197,94,0.12)',
+    },
+    {
+      icon: '🌐',
+      title: 'cURL Converter',
+      route: '/curl',
+      desc: 'Convert cURL to Fetch, Axios, or Postman collections.',
+      tags: ['fetch', 'axios', 'postman'],
+      bg: 'rgba(59,130,246,0.12)',
+    },
+    {
+      icon: '📋',
+      title: 'HTTP Status Codes',
+      route: '/http-status',
+      desc: 'Searchable reference for all HTTP status codes — RFC 9110 and extensions.',
+      tags: ['http', '404', '500', 'rfc'],
+      bg: 'rgba(239,68,68,0.10)',
+    },
+    // ── Database / Date ───────────────────────────────────────────────────────
     {
       icon: '🗄️',
       title: 'SQLite Viewer',
@@ -252,21 +338,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       tags: ['unix', 'utc', 'iso', 'timezone'],
       bg: 'rgba(236,72,153,0.12)',
     },
+    // ── Generate ──────────────────────────────────────────────────────────────
     {
-      icon: '🌐',
-      title: 'cURL Converter',
-      route: '/curl',
-      desc: 'Convert cURL to Fetch, Axios, or Postman collections.',
-      tags: ['fetch', 'axios', 'postman'],
-      bg: 'rgba(34,197,94,0.12)',
-    },
-    {
-      icon: 'Aa',
-      title: 'Case Converter',
-      route: '/utils',
-      desc: 'Transform text: camelCase, snake_case, kebab-case, etc.',
-      tags: ['camel', 'snake', 'kebab', 'pascal'],
-      bg: 'rgba(168,85,247,0.12)',
+      icon: '🔢',
+      title: 'UUID / ULID',
+      route: '/generate',
+      desc: 'Generate UUID v4, v7, and ULID identifiers in bulk via Web Crypto.',
+      tags: ['uuid', 'ulid', 'v4', 'v7'],
+      bg: 'rgba(139,92,246,0.12)',
     },
   ];
 

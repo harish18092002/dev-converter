@@ -193,13 +193,22 @@ export class HeaderComponent {
   }
 
   navItems = [
-    { label: 'Home', path: '/', exact: true },
-    { label: 'JSON / XML', path: '/json', exact: false },
-    { label: 'Encoders', path: '/base64', exact: false },
-    { label: 'Database', path: '/db', exact: false },
-    { label: 'Date & Time', path: '/date', exact: false },
-    { label: 'API Converter', path: '/curl', exact: false },
-    { label: 'Text Utilities', path: '/utils', exact: false },
+    { label: 'Home',       path: '/',            exact: true  },
+    { label: 'JSON',       path: '/json',         exact: false },
+    { label: 'Base64',     path: '/base64',       exact: false },
+    { label: 'JWT',        path: '/jwt',          exact: false },
+    { label: 'Regex',      path: '/regex',        exact: false },
+    { label: 'Color',      path: '/color',        exact: false },
+    { label: 'URL',        path: '/url',          exact: false },
+    { label: 'Password',   path: '/password',     exact: false },
+    { label: 'UUID',       path: '/generate',     exact: false },
+    { label: 'Number',     path: '/number',       exact: false },
+    { label: 'CSS Units',  path: '/css-units',    exact: false },
+    { label: 'HTTP Codes', path: '/http-status',  exact: false },
+    { label: 'Date',       path: '/date',         exact: false },
+    { label: 'cURL',       path: '/curl',         exact: false },
+    { label: 'Case',       path: '/utils',        exact: false },
+    { label: 'SQLite',     path: '/db',           exact: false },
   ];
 
   headerBg() {

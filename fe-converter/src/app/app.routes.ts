@@ -52,5 +52,69 @@ export const routes: Routes = [
         (m) => m.CaseConverterComponent,
       ),
   },
+  // ── New tools ──────────────────────────────────────────────────────────────
+  {
+    path: 'jwt',
+    loadComponent: () =>
+      import('./features/security/jwt-decoder/jwt-decoder.component').then(
+        (m) => m.JwtDecoderComponent,
+      ),
+  },
+  {
+    path: 'regex',
+    loadComponent: () =>
+      import('./features/text-tools/regex-tester/regex-tester.component').then(
+        (m) => m.RegexTesterComponent,
+      ),
+  },
+  {
+    path: 'color',
+    loadComponent: () =>
+      import('./features/design-tools/color-converter/color-converter.component').then(
+        (m) => m.ColorConverterComponent,
+      ),
+  },
+  {
+    path: 'generate',
+    loadComponent: () =>
+      import('./features/generate-tools/uuid-generator/uuid-generator.component').then(
+        (m) => m.UuidGeneratorComponent,
+      ),
+  },
+  {
+    path: 'number',
+    loadComponent: () =>
+      import('./features/text-tools/number-base/number-base.component').then(
+        (m) => m.NumberBaseComponent,
+      ),
+  },
+  {
+    path: 'url',
+    loadComponent: () =>
+      import('./features/network-tools/url-parser/url-parser.component').then(
+        (m) => m.UrlParserComponent,
+      ),
+  },
+  {
+    path: 'password',
+    loadComponent: () =>
+      import('./features/security/password-generator/password-generator.component').then(
+        (m) => m.PasswordGeneratorComponent,
+      ),
+  },
+  {
+    path: 'http-status',
+    loadComponent: () =>
+      import('./features/reference/http-status/http-status.component').then(
+        (m) => m.HttpStatusComponent,
+      ),
+  },
+  {
+    path: 'css-units',
+    loadComponent: () =>
+      import('./features/design-tools/css-units/css-units.component').then(
+        (m) => m.CssUnitsComponent,
+      ),
+  },
   { path: '**', redirectTo: '' },
 ];
