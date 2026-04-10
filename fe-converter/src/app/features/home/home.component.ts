@@ -92,9 +92,9 @@ import { ThemeService } from '../../core/services/theme.service';
             <a href="#tools" class="btn-secondary">Browse All</a>
           </div>
 
-          <div id="hero-metrics" class="mt-24 grid grid-cols-3 gap-8 max-w-md mx-auto">
-            @for (stat of stats; track stat.label) {
-              <div class="text-center">
+          <div class="mt-24 grid grid-cols-3 gap-8 max-w-md mx-auto">
+            @for (stat of stats; track stat.label; let i = $index) {
+              <div class="text-center stat-item" [style.animation-delay]="(500 + i * 120) + 'ms'">
                 <div class="text-2xl sm:text-3xl font-bold" style="color:var(--text-primary)">
                   {{ stat.value }}
                 </div>
@@ -200,8 +200,13 @@ import { ThemeService } from '../../core/services/theme.service';
   `,
   styles: [
     `
-      :host {
-        display: block;
+      :host { display: block; }
+      .stat-item {
+        animation: stat-in 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+      }
+      @keyframes stat-in {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
       }
     `,
   ],
@@ -363,12 +368,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           tl.from('#hero-badge', { y: 30, opacity: 0, duration: 0.8 })
             .from('#hero-title', { y: 50, opacity: 0, duration: 1 }, '-=0.5')
             .from('#hero-sub', { y: 30, opacity: 0, duration: 0.8 }, '-=0.6')
-            .from('#hero-cta', { y: 20, opacity: 0, duration: 0.7 }, '-=0.5')
-            .from(
-              '#hero-metrics > div',
-              { y: 20, opacity: 0, stagger: 0.12, duration: 0.6 },
-              '-=0.3',
-            );
+            .from('#hero-cta', { y: 20, opacity: 0, duration: 0.7 }, '-=0.5');
 
           if (!isMobile) {
             gsap.to('#orb-a', {
