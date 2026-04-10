@@ -238,7 +238,7 @@ export class CssUnitsComponent {
   inputValues = signal<Record<string, string>>({});
 
   // All converted display values
-  convertedValues = computed<Record<string, string>>(() => {
+  convertedValues = computed<Record<string, string | undefined>>(() => {
     const src = this.sourceUnit();
     if (!src) return {};
     const srcDef = UNITS.find((u) => u.key === src)!;

@@ -1,6 +1,7 @@
 import {
   Component,
   signal,
+  computed,
   inject,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -19,69 +20,51 @@ interface NavGroup { label: string; emoji: string; items: NavItem[] }
   selector: 'app-header',
   imports: [RouterLink, RouterLinkActive],
   template: `
+    <!-- The entire header is one hover zone. mouseleave on <header> starts the close timer.
+         Moving from nav bar down into the mega panel never fires mouseleave because the panel
+         is a DOM child of <header>. This eliminates the hover-gap problem entirely. -->
     <header
       class="fixed top-0 left-0 w-full z-50 transition-all duration-500"
       [class.scrolled]="isScrolled()"
+      (mouseleave)="scheduleClose()"
     >
+      <!-- ── Bar ── -->
       <div class="h-16 relative flex items-center px-5 lg:px-8 max-w-[1400px] mx-auto">
 
         <!-- Logo -->
         <a routerLink="/" class="logo flex items-center gap-2.5 flex-shrink-0">
-          <div class="logo-mark w-8 h-8 rounded-xl flex items-center justify-center font-black text-white text-[11px]">DC</div>
+          <div class="logo-mark w-8 h-8 rounded-xl flex items-center justify-center font-black text-white text-[10px] tracking-tight">DC</div>
           <span class="text-[15px] font-bold gradient-text hidden sm:block tracking-tight">DevConverter</span>
         </a>
 
-        <!-- Desktop nav (absolutely centered) -->
-        <nav class="hidden lg:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2" (mouseleave)="closeGroup()">
+        <!-- Desktop nav — absolutely centered so it's never pushed by logo/controls width -->
+        <nav
+          class="hidden lg:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2"
+          aria-label="Main navigation"
+        >
           <a
             routerLink="/"
             routerLinkActive="nav-active"
             [routerLinkActiveOptions]="{ exact: true }"
             class="nav-pill"
+            (mouseenter)="scheduleClose()"
           >Home</a>
 
           @for (g of navGroups; track g.label) {
-            <div class="group-wrap relative" (mouseenter)="openGroup(g.label)">
-              <button
-                class="nav-pill flex items-center gap-1"
-                [class.nav-active]="isGroupActive(g)"
-                [attr.aria-expanded]="activeGroup() === g.label"
-                aria-haspopup="menu"
-                (click)="toggleGroup(g.label)"
-                (keydown.escape)="closeGroup()"
-              >
-                {{ g.label }}
-                <svg
-                  class="chevron w-3 h-3 opacity-40"
-                  [class.open]="activeGroup() === g.label"
-                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </button>
-
-              @if (activeGroup() === g.label) {
-                <div class="dropdown" role="menu">
-                  <div class="dropdown-content">
-                    @for (item of g.items; track item.path) {
-                      <a
-                        [routerLink]="item.path"
-                        routerLinkActive="dropdown-active"
-                        class="dropdown-row"
-                        role="menuitem"
-                        (click)="closeGroup()"
-                      >
-                        <span class="d-icon">{{ item.icon }}</span>
-                        <span>
-                          <span class="d-label">{{ item.label }}</span>
-                          <span class="d-desc">{{ item.desc }}</span>
-                        </span>
-                      </a>
-                    }
-                  </div>
-                </div>
-              }
-            </div>
+            <button
+              class="nav-pill relative"
+              [class.nav-open]="activeGroup() === g.label"
+              [class.nav-active]="isGroupActive(g)"
+              [attr.aria-expanded]="activeGroup() === g.label"
+              aria-haspopup="true"
+              (mouseenter)="openGroup(g.label)"
+              (click)="toggleGroup(g.label)"
+              (keydown.escape)="closeGroup()"
+            >
+              {{ g.label }}
+              <!-- animated dot indicator connecting button to mega panel -->
+              <span class="open-dot" [class.visible]="activeGroup() === g.label"></span>
+            </button>
           }
         </nav>
 
@@ -109,7 +92,39 @@ interface NavGroup { label: string; emoji: string; items: NavItem[] }
         </div>
       </div>
 
-      <!-- Mobile menu -->
+      <!-- ── Mega panel ── lives INSIDE <header>, so mouse moving from nav → panel
+           never leaves the header boundary → no accidental close -->
+      @if (activeGroup() !== null) {
+        <div
+          class="mega hidden lg:block"
+          role="region"
+          [attr.aria-label]="activeGroup()! + ' tools'"
+          (mouseenter)="cancelClose()"
+        >
+          <div class="mega-inner px-5 lg:px-8 max-w-[1400px] mx-auto">
+            <p class="mega-eyebrow">{{ activeGroup() }}</p>
+            <div class="mega-grid">
+              @for (item of activeItems(); track item.path; let i = $index) {
+                <a
+                  [routerLink]="item.path"
+                  routerLinkActive="mega-active"
+                  class="mega-card"
+                  [style.animation-delay]="(i * 45) + 'ms'"
+                  (click)="closeGroup()"
+                >
+                  <span class="mega-icon">{{ item.icon }}</span>
+                  <span class="flex flex-col min-w-0">
+                    <span class="mega-name">{{ item.label }}</span>
+                    <span class="mega-desc">{{ item.desc }}</span>
+                  </span>
+                </a>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- ── Mobile menu ── -->
       @if (menuOpen()) {
         <div class="mob-menu lg:hidden" role="dialog" aria-modal="true" aria-label="Navigation menu">
           <nav class="mob-inner">
@@ -122,7 +137,7 @@ interface NavGroup { label: string; emoji: string; items: NavItem[] }
             >🏠 <span>Home</span></a>
 
             @for (g of navGroups; track g.label; let gi = $index) {
-              <section class="mob-section" [style.animation-delay]="(gi * 50) + 'ms'">
+              <section class="mob-section" [style.animation-delay]="(gi * 55) + 'ms'">
                 <p class="mob-section-title">{{ g.emoji }} {{ g.label }}</p>
                 <div class="mob-chips">
                   @for (item of g.items; track item.path) {
@@ -145,13 +160,13 @@ interface NavGroup { label: string; emoji: string; items: NavItem[] }
     `
       :host { display: block; }
 
-      /* ── Shell ── */
+      /* ── Header shell ── */
       header { background: transparent; }
       .scrolled {
         background: var(--header-scrolled-bg);
         backdrop-filter: blur(24px) saturate(180%);
         border-bottom: 1px solid var(--border-subtle);
-        box-shadow: 0 1px 40px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 1px 40px rgba(0, 0, 0, 0.14);
       }
 
       /* ── Logo ── */
@@ -166,6 +181,7 @@ interface NavGroup { label: string; emoji: string; items: NavItem[] }
 
       /* ── Nav pills ── */
       .nav-pill {
+        position: relative;
         padding: 5px 13px;
         border-radius: 8px;
         font-size: 13px;
@@ -180,62 +196,88 @@ interface NavGroup { label: string; emoji: string; items: NavItem[] }
         align-items: center;
         text-decoration: none;
       }
-      .nav-pill:hover { color: var(--text-primary); background: var(--tab-hover-bg); }
+      .nav-pill:hover,
+      .nav-open { color: var(--text-primary); background: rgba(139, 92, 246, 0.08); }
       .nav-active { color: var(--text-primary) !important; background: rgba(124, 58, 237, 0.12) !important; }
 
-      /* ── Chevron ── */
-      .chevron { transition: transform 0.25s; }
-      .chevron.open { transform: rotate(180deg); }
-
-      /* ── Dropdown ── */
-      .group-wrap { display: inline-flex; position: relative; }
-      .dropdown {
+      /* animated dot under the active group button */
+      .open-dot {
         position: absolute;
-        top: calc(100% + 4px);
+        bottom: -18px;
         left: 50%;
-        transform: translateX(-50%);
-        z-index: 200;
-        padding-top: 4px;
-        animation: drop-in 0.18s cubic-bezier(0.4, 0, 0.2, 1) both;
+        transform: translateX(-50%) scale(0);
+        width: 5px; height: 5px;
+        border-radius: 50%;
+        background: var(--gradient-from);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
+        opacity: 0;
       }
-      .dropdown-content {
-        min-width: 230px;
-        background: var(--bg-panel);
-        border: 1px solid var(--border-subtle);
-        border-radius: 16px;
-        box-shadow:
-          0 24px 60px rgba(0, 0, 0, 0.28),
-          0 0 0 1px rgba(255, 255, 255, 0.04);
-        backdrop-filter: blur(24px);
-        padding: 6px;
+      .open-dot.visible { transform: translateX(-50%) scale(1); opacity: 1; }
+
+      /* ── Mega panel ── */
+      .mega {
+        border-top: 1px solid var(--border-subtle);
+        background: var(--header-mobile-bg);
+        backdrop-filter: blur(28px) saturate(180%);
+        padding: 20px 0 22px;
+        animation: mega-slide 0.22s cubic-bezier(0.4, 0, 0.2, 1) both;
       }
-      .dropdown-row {
+      @keyframes mega-slide {
+        from { opacity: 0; transform: translateY(-6px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .mega-eyebrow {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--gradient-from);
+        margin-bottom: 12px;
+      }
+      .mega-grid {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .mega-card {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 9px 10px;
-        border-radius: 10px;
+        gap: 12px;
+        padding: 13px 16px;
+        border-radius: 14px;
+        border: 1px solid var(--border-subtle);
+        background: var(--glass-bg);
         text-decoration: none;
-        transition: background 0.15s;
+        flex: 1 1 160px;
+        max-width: 280px;
+        transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        animation: card-in 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
       }
-      .dropdown-row:hover { background: var(--tab-hover-bg); }
-      .dropdown-active { background: rgba(124, 58, 237, 0.12) !important; }
-      .d-icon {
-        width: 30px; height: 30px;
+      .mega-card:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--border-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.1);
+      }
+      .mega-active {
+        background: rgba(124, 58, 237, 0.08) !important;
+        border-color: rgba(124, 58, 237, 0.22) !important;
+      }
+      @keyframes card-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .mega-icon {
+        width: 38px; height: 38px;
         display: flex; align-items: center; justify-content: center;
-        border-radius: 8px;
+        border-radius: 10px;
         background: rgba(139, 92, 246, 0.1);
-        font-size: 13px;
-        flex-shrink: 0;
+        font-size: 16px; font-weight: 700;
         font-family: monospace;
+        flex-shrink: 0;
       }
-      .d-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-primary); }
-      .d-desc { display: block; font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-
-      @keyframes drop-in {
-        from { opacity: 0; transform: translateX(-50%) translateY(-8px) scale(0.97); }
-        to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-      }
+      .mega-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+      .mega-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.35; }
 
       /* ── Theme toggle ── */
       .theme-toggle {
@@ -355,6 +397,8 @@ export class HeaderComponent {
   isAnimating = signal(false);
   activeGroup = signal<string | null>(null);
 
+  private closeTimer: ReturnType<typeof setTimeout> | null = null;
+
   navGroups: NavGroup[] = [
     {
       label: 'Format', emoji: '{}',
@@ -398,6 +442,8 @@ export class HeaderComponent {
     },
   ];
 
+  activeItems = computed(() => this.navGroups.find((g) => g.label === this.activeGroup())?.items ?? []);
+
   isGroupActive(group: NavGroup): boolean {
     const url = this.router.url;
     return group.items.some(
@@ -418,9 +464,39 @@ export class HeaderComponent {
       });
   }
 
-  openGroup(label: string) { this.activeGroup.set(label); }
-  closeGroup() { this.activeGroup.set(null); }
-  toggleGroup(label: string) { this.activeGroup.update((v) => (v === label ? null : label)); }
+  openGroup(label: string) {
+    this.cancelClose();
+    this.activeGroup.set(label);
+  }
+
+  closeGroup() {
+    this.cancelClose();
+    this.activeGroup.set(null);
+  }
+
+  scheduleClose() {
+    this.cancelClose();
+    this.closeTimer = setTimeout(() => {
+      this.activeGroup.set(null);
+      this.closeTimer = null;
+    }, 180);
+  }
+
+  cancelClose() {
+    if (this.closeTimer !== null) {
+      clearTimeout(this.closeTimer);
+      this.closeTimer = null;
+    }
+  }
+
+  toggleGroup(label: string) {
+    if (this.activeGroup() === label) {
+      this.closeGroup();
+    } else {
+      this.openGroup(label);
+    }
+  }
+
   toggleMenu() { this.menuOpen.update((v) => !v); }
 
   onScroll() {
