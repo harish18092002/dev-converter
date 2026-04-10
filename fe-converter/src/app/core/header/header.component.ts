@@ -23,16 +23,16 @@ interface NavGroup { label: string; emoji: string; items: NavItem[] }
       class="fixed top-0 left-0 w-full z-50 transition-all duration-500"
       [class.scrolled]="isScrolled()"
     >
-      <div class="h-16 flex items-center gap-4 px-5 lg:px-8 max-w-[1400px] mx-auto">
+      <div class="h-16 relative flex items-center px-5 lg:px-8 max-w-[1400px] mx-auto">
 
         <!-- Logo -->
-        <a routerLink="/" class="logo flex items-center gap-2.5 flex-shrink-0 mr-2">
+        <a routerLink="/" class="logo flex items-center gap-2.5 flex-shrink-0">
           <div class="logo-mark w-8 h-8 rounded-xl flex items-center justify-center font-black text-white text-[11px]">DC</div>
           <span class="text-[15px] font-bold gradient-text hidden sm:block tracking-tight">DevConverter</span>
         </a>
 
-        <!-- Desktop nav -->
-        <nav class="hidden lg:flex items-center gap-0.5 flex-1" (mouseleave)="closeGroup()">
+        <!-- Desktop nav (absolutely centered) -->
+        <nav class="hidden lg:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2" (mouseleave)="closeGroup()">
           <a
             routerLink="/"
             routerLinkActive="nav-active"
@@ -86,7 +86,7 @@ interface NavGroup { label: string; emoji: string; items: NavItem[] }
         </nav>
 
         <!-- Right controls -->
-        <div class="flex items-center gap-2 ml-auto">
+        <div class="flex items-center gap-2 ml-auto flex-shrink-0">
           <button
             (click)="toggleTheme()"
             class="theme-toggle"
