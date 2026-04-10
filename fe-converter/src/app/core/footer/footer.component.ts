@@ -35,13 +35,13 @@ import { RouterLink } from '@angular/router';
               class="text-[11px] font-semibold uppercase tracking-[0.15em] mb-4"
               style="color:var(--text-muted)"
             >
-              Tools
+              Format &amp; Encode
             </h4>
             <ul class="space-y-2.5 text-sm">
-              <li><a routerLink="/json" class="footer-link">JSON Tools</a></li>
+              <li><a routerLink="/json" class="footer-link">JSON → XML/YAML/TOML</a></li>
               <li><a routerLink="/base64" class="footer-link">Base64</a></li>
-              <li><a routerLink="/db" class="footer-link">Database</a></li>
-              <li><a routerLink="/date" class="footer-link">DateTime</a></li>
+              <li><a routerLink="/curl" class="footer-link">cURL Converter</a></li>
+              <li><a routerLink="/url" class="footer-link">URL Parser</a></li>
             </ul>
           </div>
           <div>
@@ -49,13 +49,17 @@ import { RouterLink } from '@angular/router';
               class="text-[11px] font-semibold uppercase tracking-[0.15em] mb-4"
               style="color:var(--text-muted)"
             >
-              More
+              Security &amp; Generate
             </h4>
             <ul class="space-y-2.5 text-sm">
-              <li><a routerLink="/curl" class="footer-link">cURL</a></li>
-              <li><a routerLink="/utils" class="footer-link">Case Utils</a></li>
-              <li><span style="color:var(--text-dim)">100% Client-Side</span></li>
-              <li><span style="color:var(--text-dim)">Open Source</span></li>
+              <li><a routerLink="/jwt" class="footer-link">JWT Decoder</a></li>
+              <li><a routerLink="/password" class="footer-link">Password Generator</a></li>
+              <li><a routerLink="/generate" class="footer-link">UUID / ULID</a></li>
+              <li><a routerLink="/regex" class="footer-link">Regex Tester</a></li>
+              <li><a routerLink="/number" class="footer-link">Number Base</a></li>
+              <li><a routerLink="/color" class="footer-link">Color Converter</a></li>
+              <li><a routerLink="/css-units" class="footer-link">CSS Units</a></li>
+              <li><a routerLink="/http-status" class="footer-link">HTTP Status Codes</a></li>
             </ul>
           </div>
         </div>

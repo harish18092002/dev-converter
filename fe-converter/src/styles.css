@@ -322,6 +322,59 @@
     box-shadow: 0 2px 12px var(--accent-shadow);
   }
 
+  /* ═══ TOOL PAGE LAYOUT SYSTEM ═══ */
+  /* Used by all two-panel tool pages */
+  .tool-page-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    padding: 80px 40px 24px;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .tool-page-header {
+    flex-shrink: 0;
+    margin-bottom: 20px;
+  }
+  .tool-page-controls {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .tool-page-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    flex: 1;
+    min-height: 0;
+  }
+  .panel-footer {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 11px;
+    border-top: 1px solid var(--border-subtle);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  /* Regex highlight marks */
+  mark.regex-match {
+    background: rgba(251, 191, 36, 0.25);
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 1px;
+    outline: 1px solid rgba(251, 191, 36, 0.4);
+  }
+
   /* ═══ THEME TOGGLE ═══ */
   .theme-toggle {
     @apply relative w-14 h-7 rounded-full cursor-pointer transition-all duration-500;

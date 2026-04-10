@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ConverterService } from '../../../core/services/converter.service';
 
-type TabKey = 'xml' | 'yaml' | 'csv' | 'excel' | 'sql';
+type TabKey = 'xml' | 'yaml' | 'csv' | 'excel' | 'sql' | 'toml';
 
 @Component({
   selector: 'app-json-converter',
@@ -183,6 +183,7 @@ export class JsonConverterComponent {
     { key: 'csv' as TabKey, label: 'CSV' },
     { key: 'excel' as TabKey, label: 'Excel' },
     { key: 'sql' as TabKey, label: 'SQL' },
+    { key: 'toml' as TabKey, label: 'TOML' },
   ];
 
   activeTab = signal<TabKey>('xml');
@@ -242,6 +243,9 @@ export class JsonConverterComponent {
         case 'sql':
           this.output.set(this.svc.jsonToSql(input));
           break;
+        case 'toml':
+          this.output.set(await this.svc.jsonToToml(input));
+          break;
       }
     } catch (e: any) {
       this.error.set(e.message);
@@ -253,9 +257,20 @@ export class JsonConverterComponent {
       this.jsonInput.set(JSON.stringify(JSON.parse(this.jsonInput()), null, 2));
     } catch {}
   }
-  swapPanels() {
+  async swapPanels() {
     const o = this.output();
-    if (o) {
+    if (!o) return;
+    // For TOML tab: convert TOML output → JSON input
+    if (this.activeTab() === 'toml') {
+      try {
+        const json = await this.svc.tomlToJson(o);
+        this.jsonInput.set(json);
+        this.error.set('');
+        this.output.set('');
+      } catch (e: any) {
+        this.error.set(e.message);
+      }
+    } else {
       this.jsonInput.set(o);
       this.convert();
     }

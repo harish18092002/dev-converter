@@ -77,6 +77,21 @@ export class ConverterService {
       throw new Error('Invalid JSON');
     }
   }
+  // TOML <-> JSON (dynamic import: smol-toml)
+  async jsonToToml(jsonStr: string): Promise<string> {
+    const obj = JSON.parse(jsonStr);
+    // smol-toml stringify requires a plain object (not arrays at root)
+    if (Array.isArray(obj)) throw new Error('Root JSON arrays cannot be represented as TOML');
+    const { stringify } = await import('smol-toml');
+    return stringify(obj as Record<string, unknown>);
+  }
+
+  async tomlToJson(tomlStr: string): Promise<string> {
+    const { parse } = await import('smol-toml');
+    const obj = parse(tomlStr);
+    return JSON.stringify(obj, null, 2);
+  }
+
   // Base64
   toBase64(str: string): string {
     return btoa(unescape(encodeURIComponent(str)));
