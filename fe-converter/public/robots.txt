@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://devconverter-87f4f.web.app/sitemap.xml
